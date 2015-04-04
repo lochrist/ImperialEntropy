@@ -5,7 +5,7 @@
  * Services that persists and retrieves TODOs from localStorage.
  */
 define(['app'], function (app) {
-	app.factory('todoStorage', function () {
+	app.factory('storage', function () {
 		var STORAGE_ID = 'todos-angularjs-requirejs';
 
 		return {

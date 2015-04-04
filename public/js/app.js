@@ -2,5 +2,5 @@
 'use strict';
 
 define(['angular'], function (angular) {
-	return angular.module('todomvc', []);
+	return angular.module('entropy', []);
 });

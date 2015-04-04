@@ -3,7 +3,9 @@
 
 require.config({
 	paths: {
-		angular: '../libs/angular/angular'
+		angular: '../libs/angular/angular',
+		jsface: '../libs/jsface/jsface',
+		lodash: '../libs/lodash/lodash'
 	},
 	shim: {
 		angular: {
@@ -12,6 +14,6 @@ require.config({
 	}
 });
 
-require(['angular', 'app', 'controllers/todo', 'directives/todoFocus'], function (angular) {
-	angular.bootstrap(document, ['todomvc']);
+require(['angular', 'app', 'controllers/entropy'], function (angular) {
+	angular.bootstrap(document, ['entropy']);
 });
