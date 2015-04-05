@@ -46,45 +46,7 @@
 			</div>
 			-->
 
-			<table>
-				<tr>
-					<td></td>
-					<td ng-repeat="report in reports track by $index" ng-class="" >
-						<div ng-repeat="dice in report.dices track by $index" ng-class="" class="dice {{dice.name}}">
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>Dmg</td>
-					<td ng-repeat="report in reports track by $index" ng-class="">
-						<div ng-repeat="dmg in report.dmg.entropy track by $index" ng-class="" >
-							<span ng-if="dmg.rate != 0">{{dmg.value}}+ : {{dmg.rate}}</span>
-							<br ng-if="dmg.rate == 0" />
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>Surge</td>
-					<td ng-repeat="report in reports track by $index" ng-class="">
-						<div ng-repeat="surge in report.surge.entropy track by $index" ng-class="" >
-							<span ng-if="surge.rate != 0">{{surge.value}}+ : {{surge.rate}}</span>
-							<br ng-if="surge.rate == 0" />
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>Acc</td>
-					<td ng-repeat="report in reports track by $index" ng-class="">
-						<div ng-repeat="accuracy in report.accuracy.entropy track by $index" ng-class="" >
-							<span ng-if="accuracy.rate != 0">{{accuracy.value}}+ : {{accuracy.rate}}</span>
-							<br ng-if="accuracy.rate == 0" />
-						</div>
-					</td>
-				</tr>
-			</table>
+			<report-table reports="reports"></report-table>
 
 
 

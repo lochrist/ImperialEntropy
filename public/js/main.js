@@ -14,6 +14,6 @@ require.config({
 	}
 });
 
-require(['angular', 'app', 'controllers/entropy'], function (angular) {
+require(['angular', 'app', 'controllers/entropy', 'directives/report-table'], function (angular) {
 	angular.bootstrap(document, ['entropy']);
 });
