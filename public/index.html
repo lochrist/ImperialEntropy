@@ -18,6 +18,9 @@
 
 			<report-table ng-repeat="report in atkReports track by $index" ng-class="" reports="report" report-descs="atkReportDesc">
 			</report-table>
+
+			<report-table reports="defReports" report-descs="defReportDesc">
+			</report-table>
 		</section>
 		<script data-main="js/main" src="libs/requirejs/require.js"></script>
 	</body>

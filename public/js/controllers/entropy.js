@@ -150,27 +150,33 @@ define(['app', 'lodash'], function (app, _) {
 			faces: [
 				{
 					def: 2,
-					surge: 0
+					surge: 0,
+					miss: 0
 				},
 				{
 					def: 2,
-					surge: 0
+					surge: 0,
+					miss: 0
 				},
 				{
 					def: 3,
-					surge: 0
+					surge: 0,
+					miss: 0
 				},
 				{
 					def: 1,
-					surge: 0
+					surge: 0,
+					miss: 0
 				},
 				{
 					def: 1,
-					surge: 0
+					surge: 0,
+					miss: 0
 				},
 				{
 					def: 0,
-					surge: 1
+					surge: 1,
+					miss: 0
 				}
 			]
 		};
@@ -180,11 +186,13 @@ define(['app', 'lodash'], function (app, _) {
 			faces: [
 				{
 					def: 1,
-					surge: 1
+					surge: 1,
+					miss: 0
 				},
 				{
 					def: 1,
-					surge: 0
+					surge: 0,
+					miss: 0
 				},
 				{
 					def: 0,
@@ -193,15 +201,18 @@ define(['app', 'lodash'], function (app, _) {
 				},
 				{
 					def: 0,
-					surge: 1
+					surge: 1,
+					miss: 0
 				},
 				{
 					def: 1,
-					surge: 1
+					surge: 1,
+					miss: 0
 				},
 				{
 					def: 0,
-					surge: 0
+					surge: 0,
+					miss: 0
 				}
 			]
 		};
@@ -336,26 +347,32 @@ define(['app', 'lodash'], function (app, _) {
 			console.log(msg);
 		};
 
-		$scope.prettyfyAtkReport = function (reports) {
-			function prettyfyAttr(reports, attr) {
-				var max = _.max(reports, function (report) {
-					return report[attr].entropy.length;
-				})[attr].entropy.length;
+		function prettyfyAttr(reports, attr) {
+			var max = _.max(reports, function (report) {
+				return report[attr].entropy.length;
+			})[attr].entropy.length;
 
-				// Pad values so we always have the same number of entries for each category
-				_.each(reports, function (report) {
-					var i = report[attr].entropy.length;
-					if (i > 0) {
-						for (; i < max; ++i) {
-							report[attr].entropy.push({rate: 0, value: 'dummy'});
-						}
+			// Pad values so we always have the same number of entries for each category
+			_.each(reports, function (report) {
+				var i = report[attr].entropy.length;
+				if (i > 0) {
+					for (; i < max; ++i) {
+						report[attr].entropy.push({rate: 0, value: 'dummy'});
 					}
-				});
-			}
+				}
+			});
+		}
 
+		$scope.prettyfyAtkReport = function (reports) {
 			prettyfyAttr(reports, 'dmg');
 			prettyfyAttr(reports, 'surge');
 			prettyfyAttr(reports, 'accuracy');
+		};
+
+		$scope.prettyfyDefReport = function (reports) {
+			prettyfyAttr(reports, 'def');
+			prettyfyAttr(reports, 'surge');
+			prettyfyAttr(reports, 'miss');
 		};
 
 		$scope.computeDefDicesReports = function () {
@@ -369,7 +386,7 @@ define(['app', 'lodash'], function (app, _) {
 			];
 
 			_.each(combinationsDices, function (combo) {
-				var report = $scope.computeAtkDiceReport.apply(this, combo);
+				var report = $scope.computeDefDiceReport.apply(this, combo);
 				reports.push(report);
 			});
 
@@ -449,6 +466,7 @@ define(['app', 'lodash'], function (app, _) {
 			});
 
 			$scope.defReports = $scope.computeDefDicesReports();
+			$scope.prettyfyDefReport($scope.defReports);
 		};
 
 		$scope.atkReportDesc = [
