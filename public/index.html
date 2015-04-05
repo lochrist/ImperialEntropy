@@ -15,6 +15,42 @@
 				<h1>Imperial Entropy</h1>
 			</header>
 
+			<div >
+				<div ng-repeat="report in reports track by $index" ng-class="" class="dice-report">
+					<div ng-repeat="dice in report.dices track by $index" ng-class="" class="dice {{dice.name}}" >
+					</div>
+					<div ng-if="report.dmg.entropy.length > 0" class="stat-report">
+						Dmg:
+						<div ng-repeat="dmg in report.dmg.entropy track by $index" ng-class="" >
+							<span ng-if="dmg.rate != 0">{{dmg.value}} + : {{dmg.rate}}</span>
+							<br ng-if="dmg.rate == 0" />
+						</div>
+					</div>
+
+
+					<div ng-if="report.surge.entropy.length > 0" class="stat-report">
+						Surge:
+						<div ng-repeat="surge in report.surge.entropy track by $index" ng-class="" >
+							<span ng-if="surge.rate != 0">{{surge.value}} + : {{surge.rate}}</span>
+							<br ng-if="surge.rate == 0" />
+						</div>
+					</div>
+
+					<div ng-if="report.accuracy.entropy.length > 0" class="stat-report">
+						Acc:
+						<div ng-repeat="accuracy in report.accuracy.entropy track by $index" ng-class="">
+							<span ng-if="accuracy.rate != 0">{{accuracy.value}} + : {{accuracy.rate}}</span>
+							<br ng-if="accuracy.rate == 0" />
+						</div>
+					</div>
+
+				</div>
+
+
+			</div>
+
+
+
 
 
 			<!--

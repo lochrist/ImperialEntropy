@@ -1,0 +1,35 @@
+.dice-report {
+    float:left;
+    margin: 4px;
+    padding: 4px;
+}
+
+.stat-report {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.dice {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin: 4px;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.green {
+    background-color: green;
+}

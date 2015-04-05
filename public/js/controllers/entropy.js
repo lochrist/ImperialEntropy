@@ -237,7 +237,7 @@ define(['app', 'lodash'], function (app, _) {
 			}
 
 			function createReport(results) {
-				results.sort();
+				results.sort(function (a, b) { return a-b; })
 				var unique = _.uniq(results, true);
 				var report = {
 					results: results,
@@ -277,6 +277,8 @@ define(['app', 'lodash'], function (app, _) {
 			return fullReport;
 		};
 
+		// $scope.computeAtkDiceReport(blue, blue);
+
 		$scope.printReport = function (report) {
 			var msg = "======================\n";
 			_.each(report.dices, function (dice, index) {
@@ -295,11 +297,33 @@ define(['app', 'lodash'], function (app, _) {
 				msg += '\n';
 			}
 
-			formatAttrReport(report.dmg, "Damages");
-			formatAttrReport(report.surge, "Surges");
-			formatAttrReport(report.accuracy, "Accuracy");
+			formatAttrReport(report.dmg, "Dmg");
+			formatAttrReport(report.surge, "Surge");
+			formatAttrReport(report.accuracy, "Acc");
 
 			console.log(msg);
+		};
+
+		$scope.prettyfyReport = function (reports) {
+			function prettyfyAttr(reports, attr) {
+				var max = _.max(reports, function (report) {
+					return report[attr].entropy.length;
+				})[attr].entropy.length;
+
+				// Pad values so we always have the same number of entries for each category
+				_.each(reports, function (report) {
+					var i = report[attr].entropy.length
+					if (i > 0) {
+						for (; i < max; ++i) {
+							report[attr].entropy.push({rate: 0, value: 'dummy'});
+						}
+					}
+				});
+			}
+
+			prettyfyAttr(reports, 'dmg');
+			prettyfyAttr(reports, 'surge');
+			prettyfyAttr(reports, 'accuracy');
 		};
 
 		$scope.computeFullReport = function () {
@@ -327,6 +351,8 @@ define(['app', 'lodash'], function (app, _) {
 				reports.push($scope.computeAtkDiceReport(combo[0], combo[1]));
 			});
 
+			$scope.prettyfyReport(reports);
+
 			return reports;
 		};
 
@@ -341,6 +367,9 @@ define(['app', 'lodash'], function (app, _) {
 				$scope.printReport(report);
 			});
 		};
-		$scope.printFullReport();
+		// $scope.printFullReport();
+
+		$scope.reports = $scope.computeFullReport();
+
 	}]);
 });
