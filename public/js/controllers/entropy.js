@@ -206,9 +206,9 @@ define(['app', 'lodash'], function (app, _) {
 			]
 		};
 
-		$scope.computeAtkDiceReport = function (d1, d2, d3) {
-			var faceCombinations = [];
-			var dices = [d1, d2];
+		function computeDiceCombinations(d1, d2, d3, dices, faceCombinations) {
+			dices.push(d1);
+
 			if (d3) {
 				_.each(d1.faces, function (face1) {
 					_.each(d2.faces, function (face2) {
@@ -217,50 +217,62 @@ define(['app', 'lodash'], function (app, _) {
 						});
 					});
 				});
+				dices.push(d2);
 				dices.push(d3);
-			} else{
+			} else if (d2) {
 				_.each(d1.faces, function (face1) {
 					_.each(d2.faces, function (face2) {
 						faceCombinations.push([face1, face2]);
 					});
 				});
-			}
-
-			function accum(combinations, attr) {
-				return _.map(faceCombinations, function (faces) {
-					var value = 0;
-					_.each(faces, function (face) {
-						value += face[attr];
-					});
-					return value;
+				dices.push(d2);
+			} else{
+				_.each(d1.faces, function (face1) {
+					faceCombinations.push([face1]);
 				});
 			}
+		}
 
-			function createReport(results) {
-				results.sort(function (a, b) { return a-b; })
-				var unique = _.uniq(results, true);
-				var report = {
-					results: results,
-					entropy: []
-				};
-				_.each(unique, function (val) {
-					var lastWithValStr = _.findLastKey(results, function (v) {
-							return v < val;
-						}) || "-1";
-
-					var lastWithVal = results.length - parseInt(lastWithValStr) -1;
-
-					if (val > 0) {
-						var entry = {
-							value: val,
-							rate: Math.round(lastWithVal / results.length * 100)
-						};
-						report.entropy.push(entry);
-					}
+		function accum(combinations, attr) {
+			return _.map(combinations, function (faces) {
+				var value = 0;
+				_.each(faces, function (face) {
+					value += face[attr];
 				});
+				return value;
+			});
+		}
 
-				return report;
-			}
+		function createReport(results) {
+			results.sort(function (a, b) { return a-b; });
+			var unique = _.uniq(results, true);
+			var report = {
+				results: results,
+				entropy: []
+			};
+			_.each(unique, function (val) {
+				var lastWithValStr = _.findLastKey(results, function (v) {
+						return v < val;
+					}) || "-1";
+
+				var lastWithVal = results.length - parseInt(lastWithValStr) -1;
+
+				if (val > 0) {
+					var entry = {
+						value: val,
+						rate: Math.round(lastWithVal / results.length * 100)
+					};
+					report.entropy.push(entry);
+				}
+			});
+
+			return report;
+		}
+
+		$scope.computeAtkDiceReport = function (d1, d2, d3) {
+			var faceCombinations = [];
+			var dices = [];
+			computeDiceCombinations(d1, d2, d3, dices, faceCombinations);
 
 			var dmgReport = createReport(accum(faceCombinations, 'dmg'));
 			var surgeReport = createReport(accum(faceCombinations, 'surge'));
@@ -272,6 +284,26 @@ define(['app', 'lodash'], function (app, _) {
 				dmg: dmgReport,
 				surge: surgeReport,
 				accuracy: accuracyReport
+			};
+
+			return fullReport;
+		};
+
+		$scope.computeDefDiceReport = function (d1, d2, d3) {
+			var faceCombinations = [];
+			var dices = [];
+			computeDiceCombinations(d1, d2, d3, dices, faceCombinations);
+
+			var dmgReport = createReport(accum(faceCombinations, 'def'));
+			var surgeReport = createReport(accum(faceCombinations, 'surge'));
+			var accuracyReport = createReport(accum(faceCombinations, 'miss'));
+
+			var fullReport = {
+				dices: dices,
+				faceCombinations: faceCombinations,
+				def: dmgReport,
+				surge: surgeReport,
+				miss: accuracyReport
 			};
 
 			return fullReport;
@@ -304,7 +336,7 @@ define(['app', 'lodash'], function (app, _) {
 			console.log(msg);
 		};
 
-		$scope.prettyfyReport = function (reports) {
+		$scope.prettyfyAtkReport = function (reports) {
 			function prettyfyAttr(reports, attr) {
 				var max = _.max(reports, function (report) {
 					return report[attr].entropy.length;
@@ -312,7 +344,7 @@ define(['app', 'lodash'], function (app, _) {
 
 				// Pad values so we always have the same number of entries for each category
 				_.each(reports, function (report) {
-					var i = report[attr].entropy.length
+					var i = report[attr].entropy.length;
 					if (i > 0) {
 						for (; i < max; ++i) {
 							report[attr].entropy.push({rate: 0, value: 'dummy'});
@@ -326,7 +358,25 @@ define(['app', 'lodash'], function (app, _) {
 			prettyfyAttr(reports, 'accuracy');
 		};
 
-		$scope.compute2DicesReports = function () {
+		$scope.computeDefDicesReports = function () {
+			var reports = [];
+			var combinationsDices = [
+				[black],
+				[white],
+				[black, white],
+				[black, black],
+				[black, black, white]
+			];
+
+			_.each(combinationsDices, function (combo) {
+				var report = $scope.computeAtkDiceReport.apply(this, combo);
+				reports.push(report);
+			});
+
+			return reports;
+		};
+
+		$scope.compute2AtkDicesReports = function () {
 			var dices = [red, blue, yellow, green];
 
 			var combinations2Dices = [];
@@ -342,12 +392,10 @@ define(['app', 'lodash'], function (app, _) {
 				reports.push($scope.computeAtkDiceReport(combo[0], combo[1]));
 			});
 
-			$scope.prettyfyReport(reports);
-
 			return reports;
 		};
 
-		$scope.compute3DicesReports = function () {
+		$scope.compute3AtkDicesReports = function () {
 			var combinations3Dices = [
 				[red, red, green],
 				[red, red, yellow],
@@ -380,11 +428,6 @@ define(['app', 'lodash'], function (app, _) {
 		};
 
 		$scope.printFullReport = function () {
-			/*
-			 _.each(combinations3Dices, function (combo) {
-			 reports.push($scope.computeAtkDiceReport(combo[0], combo[1], combo[2]));
-			 });
-			 */
 			var reports = $scope.computeFullReport();
 			_.each(reports, function (report) {
 				$scope.printReport(report);
@@ -393,18 +436,50 @@ define(['app', 'lodash'], function (app, _) {
 		// $scope.printFullReport();
 
 		$scope.computeFullReport = function () {
-			$scope.reports = [];
-			$scope.reports.push($scope.compute2DicesReports());
+			$scope.atkReports = [];
+			$scope.atkReports.push($scope.compute2AtkDicesReports());
 
-			var threeDicesReports = $scope.compute3DicesReports();
+			var threeDicesReports = $scope.compute3AtkDicesReports();
 			var mid = threeDicesReports.length / 2;
-			$scope.reports.push(threeDicesReports.slice(0, mid));
-			$scope.reports.push(threeDicesReports.slice(mid, threeDicesReports.length));
+			$scope.atkReports.push(threeDicesReports.slice(0, mid));
+			$scope.atkReports.push(threeDicesReports.slice(mid, threeDicesReports.length));
 
-			_.each($scope.reports, function (report) {
-				$scope.prettyfyReport(report);
+			_.each($scope.atkReports, function (report) {
+				$scope.prettyfyAtkReport(report);
 			});
+
+			$scope.defReports = $scope.computeDefDicesReports();
 		};
+
+		$scope.atkReportDesc = [
+			{
+				name: 'Dmg',
+				attr: 'dmg'
+			},
+			{
+				name: 'Surge',
+				attr: 'surge'
+			},
+			{
+				name: 'Acc',
+				attr: 'accuracy'
+			}
+		];
+
+		$scope.defReportDesc = [
+			{
+				name: 'Def',
+				attr: 'def'
+			},
+			{
+				name: 'Surge',
+				attr: 'surge'
+			},
+			{
+				name: 'Miss',
+				attr: 'miss'
+			}
+		];
 
 		$scope.computeFullReport();
 

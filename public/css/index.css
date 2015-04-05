@@ -34,6 +34,14 @@
     background-color: green;
 }
 
+.black {
+    background-color: black;
+}
+
+.white {
+    background-color: white;
+}
+
 #entropyapp {
     font-size: 12px;
 }

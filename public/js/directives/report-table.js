@@ -4,7 +4,8 @@ define(['app'], function (app) {
         return {
             restrict: 'E',
             scope: {
-                reports: '='
+                reports: '=',
+                reportDescs: '='
             },
             templateUrl: "js/directives/report-table.html"
         };

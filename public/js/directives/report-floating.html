@@ -1,5 +1,5 @@
 <div ng-repeat="report in reports track by $index" ng-class="" class="dice-report">
-    <div ng-repeat="dice in report.dices track by $index" ng-class="" class="dice {{dice.name}}" >
+    <div ng-repeat="dice in ::report.dices track by $index" ng-class="" class="dice {{dice.name}}" >
     </div>
     <div ng-if="report.dmg.entropy.length > 0" class="stat-report">
         Dmg:
