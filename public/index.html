@@ -10,82 +10,14 @@
 		<script src="libs/angular-loader/angular-loader.js"></script>
 	</head>
 	<body>
+		<header id="header">
+			<h3>Imperial Entropy</h3>
+		</header>
 		<section id="entropyapp" ng-controller="EntropyController">
-			<header id="header">
-				<h1>Imperial Entropy</h1>
-			</header>
+			<!-- <report-floating reports="twoDicesReports"></report-floating> -->
 
-			<!--
-			<div ng-repeat="report in reports track by $index" ng-class="" class="dice-report">
-				<div ng-repeat="dice in report.dices track by $index" ng-class="" class="dice {{dice.name}}" >
-				</div>
-				<div ng-if="report.dmg.entropy.length > 0" class="stat-report">
-					Dmg:
-					<div ng-repeat="dmg in report.dmg.entropy track by $index" ng-class="" >
-						<span ng-if="dmg.rate != 0">{{dmg.value}} + : {{dmg.rate}}</span>
-						<br ng-if="dmg.rate == 0" />
-					</div>
-				</div>
-
-
-				<div ng-if="report.surge.entropy.length > 0" class="stat-report">
-					Surge:
-					<div ng-repeat="surge in report.surge.entropy track by $index" ng-class="" >
-						<span ng-if="surge.rate != 0">{{surge.value}} + : {{surge.rate}}</span>
-						<br ng-if="surge.rate == 0" />
-					</div>
-				</div>
-
-				<div ng-if="report.accuracy.entropy.length > 0" class="stat-report">
-					Acc:
-					<div ng-repeat="accuracy in report.accuracy.entropy track by $index" ng-class="">
-						<span ng-if="accuracy.rate != 0">{{accuracy.value}} + : {{accuracy.rate}}</span>
-						<br ng-if="accuracy.rate == 0" />
-					</div>
-				</div>
-			</div>
-			-->
-
-			<report-table reports="reports"></report-table>
-
-
-
-
-			<!--
-			<section id="main" ng-show="todos.length" ng-cloak>
-				<input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
-				<label for="toggle-all">Mark all as complete</label>
-				<ul id="todo-list">
-					<li ng-repeat="todo in todos | filter:statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
-						<div class="view">
-							<input class="toggle" type="checkbox" ng-model="todo.completed">
-							<label ng-dblclick="editTodo(todo)">{{todo.title}}</label>
-							<button class="destroy" ng-click="removeTodo(todo)"></button>
-						</div>
-						<form ng-submit="doneEditing(todo)">
-							<input class="edit" ng-trim="false" ng-model="todo.title" ng-blur="doneEditing(todo)" todo-focus="todo == editedTodo">
-						</form>
-					</li>
-				</ul>
-			</section>
-			<footer id="footer" ng-show="todos.length" ng-cloak>
-				<span id="todo-count"><strong>{{remainingCount}}</strong>
-					<ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
-				</span>
-				<ul id="filters">
-					<li>
-						<a ng-class="{selected: location.path() == '/'} " href="#/">All</a>
-					</li>
-					<li>
-						<a ng-class="{selected: location.path() == '/active'}" href="#/active">Active</a>
-					</li>
-					<li>
-						<a ng-class="{selected: location.path() == '/completed'}" href="#/completed">Completed</a>
-					</li>
-				</ul>
-				<button id="clear-completed" ng-click="clearDoneTodos()" ng-show="remainingCount < todos.length">Clear completed ({{todos.length - remainingCount}})</button>
-			</footer>
-			-->
+			<report-table ng-repeat="report in reports track by $index" ng-class="" reports="report">
+			</report-table>
 		</section>
 		<script data-main="js/main" src="libs/requirejs/require.js"></script>
 	</body>

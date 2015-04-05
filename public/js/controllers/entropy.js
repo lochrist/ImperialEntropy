@@ -326,24 +326,15 @@ define(['app', 'lodash'], function (app, _) {
 			prettyfyAttr(reports, 'accuracy');
 		};
 
-		$scope.computeFullReport = function () {
+		$scope.compute2DicesReports = function () {
 			var dices = [red, blue, yellow, green];
 
 			var combinations2Dices = [];
 			var reports = [];
-			var combinations3Dices = [];
 
 			for (var i = 0; i < dices.length; ++i) {
 				for (var j = i; j < dices.length; ++j) {
 					combinations2Dices.push([dices[i], dices[j]]);
-				}
-			}
-
-			for (var i = 0; i < dices.length; ++i) {
-				for (var j = i; j < dices.length; ++j) {
-					for (var k = j + 1; k < dices.length; ++k) {
-						combinations3Dices.push([dices[i], dices[j], dices[k]]);
-					}
 				}
 			}
 
@@ -352,6 +343,38 @@ define(['app', 'lodash'], function (app, _) {
 			});
 
 			$scope.prettyfyReport(reports);
+
+			return reports;
+		};
+
+		$scope.compute3DicesReports = function () {
+			var combinations3Dices = [
+				[red, red, green],
+				[red, red, yellow],
+				[red, red, blue],
+
+				[green, green, red],
+				[green, green, yellow],
+				[green, green, blue],
+
+				[yellow, yellow, red],
+				[yellow, yellow, green],
+				[yellow, yellow, blue],
+
+				[blue, blue, red],
+				[blue, blue, green],
+				[blue, blue, yellow],
+
+				[red, green, yellow],
+				[red, green, blue],
+				[red, blue, yellow],
+				[blue, green, yellow]
+			];
+			var reports = [];
+
+			_.each(combinations3Dices, function (combo) {
+				reports.push($scope.computeAtkDiceReport(combo[0], combo[1], combo[2]));
+			});
 
 			return reports;
 		};
@@ -369,7 +392,21 @@ define(['app', 'lodash'], function (app, _) {
 		};
 		// $scope.printFullReport();
 
-		$scope.reports = $scope.computeFullReport();
+		$scope.computeFullReport = function () {
+			$scope.reports = [];
+			$scope.reports.push($scope.compute2DicesReports());
+
+			var threeDicesReports = $scope.compute3DicesReports();
+			var mid = threeDicesReports.length / 2;
+			$scope.reports.push(threeDicesReports.slice(0, mid));
+			$scope.reports.push(threeDicesReports.slice(mid, threeDicesReports.length));
+
+			_.each($scope.reports, function (report) {
+				$scope.prettyfyReport(report);
+			});
+		};
+
+		$scope.computeFullReport();
 
 	}]);
 });
