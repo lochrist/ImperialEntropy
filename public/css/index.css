@@ -1,53 +1,57 @@
+body{
+      -webkit-print-color-adjust:exact;
+}
+
 .dice-report {
     float:left;
-    margin: 4px;
-    padding: 4px;
+    margin: 0.1rem;
+    padding: 0.1rem;
 }
 
 .stat-report {
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
 }
 
 .dice {
     border: 1px solid black;
-    border-radius: 5px;
-    width: 12px;
-    height: 12px;
+    border-radius: 0.1rem;
+    width: 0.6rem;
+    height: 0.6rem;
     float: left;
-    margin: 2px;
+    margin: 0.2rem;
 }
 
 .yellow {
-    background-color: yellow;
+    box-shadow: inset 0 0 0 1000px yellow;
 }
 
 .red {
-    background-color: red;
+    box-shadow: inset 0 0 0 1000px red;
 }
 
 .blue {
-    background-color: blue;
+    box-shadow: inset 0 0 0 1000px blue;
 }
 
 .green {
-    background-color: green;
+    box-shadow: inset 0 0 0 1000px green;
 }
 
 .black {
-    background-color: black;
+    box-shadow: inset 0 0 0 1000px black;
 }
 
 .white {
-    background-color: white;
+    box-shadow: inset 0 0 0 1000px white;
 }
 
 #entropyapp {
-    font-size: 12px;
+    font-size: 8.8pt;
 }
 
 table {
-    margin: 5px;
+    margin: 0.1rem;
 }
 
 table, th, td {
@@ -56,6 +60,6 @@ table, th, td {
 }
 
 th, td {
-    padding: 4px;
-    width: 55px;
+    padding: 0.1rem;
+    width: 3.5rem;
 }
