@@ -3,6 +3,7 @@
         <td></td>
         <td ng-repeat="report in ::reports track by $index" ng-class="" >
             <div ng-repeat="dice in ::report.dices track by $index" ng-class="" class="dice {{dice.name}}">
+                {{dice.displayName}}
             </div>
         </td>
     </tr>

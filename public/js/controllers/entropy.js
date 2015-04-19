@@ -5,6 +5,7 @@ define(['app', 'lodash'], function (app, _) {
 	return app.controller('EntropyController', ['$scope', function EntropyController($scope) {
 		var red = {
 			name: "red",
+			displayName: "R",
 			faces: [
 				{
 					dmg: 2,
@@ -41,6 +42,7 @@ define(['app', 'lodash'], function (app, _) {
 
 		var green = {
 			name: "green",
+			displayName: "G",
 			faces:[
 				{
 					dmg: 2,
@@ -76,6 +78,7 @@ define(['app', 'lodash'], function (app, _) {
 
 		var blue = {
 			name: "blue",
+			displayName: "B",
 			faces:[
 				{
 					dmg: 0,
@@ -111,6 +114,7 @@ define(['app', 'lodash'], function (app, _) {
 
 		var yellow = {
 			name: "yellow",
+			displayName: "Y",
 			faces: [
 				{
 					dmg: 2,
@@ -147,6 +151,7 @@ define(['app', 'lodash'], function (app, _) {
 
 		var black = {
 			name: "black",
+			displayName: "B",
 			faces: [
 				{
 					def: 2,
@@ -183,6 +188,7 @@ define(['app', 'lodash'], function (app, _) {
 
 		var white = {
 			name: "white",
+			displayName: "W",
 			faces: [
 				{
 					def: 1,
